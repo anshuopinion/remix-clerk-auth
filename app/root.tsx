@@ -5,11 +5,13 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 // eslint-disable-next-line import/no-unresolved
-import "@fontsource/inter/variable.css";
 import styles from "./tailwind.css?url";
+// Import rootAuthLoader
+import { rootAuthLoader } from "@clerk/remix/ssr.server";
 
+import { ClerkApp } from "@clerk/remix";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +26,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
+export const loader: LoaderFunction = (args) => rootAuthLoader(args);
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -42,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+function App() {
   return <Outlet />;
 }
+export default ClerkApp(App);
