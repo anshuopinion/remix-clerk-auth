@@ -8,8 +8,17 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { Link } from "@remix-run/react";
+import { Link, redirect } from "@remix-run/react";
+import { LoaderFunction } from "@remix-run/node";
+import { getAuth } from "@clerk/remix/ssr.server";
 
+export const loader: LoaderFunction = async (args) => {
+  const { userId } = await getAuth(args);
+  if (!userId) {
+    return redirect("/sign-in");
+  }
+  return {};
+};
 export default function EnhancedAuthUI() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
