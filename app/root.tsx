@@ -12,6 +12,7 @@ import styles from "./tailwind.css?url";
 import { rootAuthLoader } from "@clerk/remix/ssr.server";
 
 import { ClerkApp } from "@clerk/remix";
+import { dark } from "@clerk/themes";
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,7 +27,9 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export const loader: LoaderFunction = (args) => rootAuthLoader(args);
+export const loader: LoaderFunction = (args) => {
+  return rootAuthLoader(args);
+};
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -48,4 +51,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 function App() {
   return <Outlet />;
 }
-export default ClerkApp(App);
+export default ClerkApp(App, {
+  appearance: {
+    baseTheme: dark,
+  },
+});
